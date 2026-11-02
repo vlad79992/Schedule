@@ -1,0 +1,25 @@
+services:
+  scheduleserver:
+    image: scheduleserver
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__ScheduleContext=Host=postgres;Port=5432;Database=schedule;Username=schedule;Password=schedule
+  postgres:
+    image: postgres:latest
+    container_name: schedule-postgres
+    environment:
+      POSTGRES_DB: schedule
+      POSTGRES_USER: schedule
+      POSTGRES_PASSWORD: schedule
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:

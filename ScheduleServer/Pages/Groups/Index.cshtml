@@ -1,0 +1,81 @@
+@page
+@model ScheduleServer.Pages_Groups.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get" class="mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="searchString" class="col-form-label fw-bold">Поиск:</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" 
+                   id="searchString" 
+                   name="SearchString" 
+                   value="@Model.SearchString" 
+                   class="form-control" 
+                   placeholder="Название или факультет" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Найти</button>
+            <a asp-page="./Index" class="btn btn-outline-secondary">Сбросить</a>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].Guid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].Faculty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].ProgramType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].Course)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Group) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Guid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Faculty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProgramType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Guid">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Guid">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Guid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
