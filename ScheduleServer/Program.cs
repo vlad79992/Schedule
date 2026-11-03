@@ -28,6 +28,7 @@ var app = builder.Build();
     app.MapScalarApiReference();
 }
 
+app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();

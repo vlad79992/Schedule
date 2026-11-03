@@ -26,7 +26,6 @@ import com.moshk.schedule.resources.trending_flat_48px
 import com.moshk.schedule.ui.theme.ScheduleAppTheme
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone.Companion.UTC
-import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.format
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.FormatStringsInDatetimeFormats
@@ -60,9 +59,9 @@ fun EventScreen(event: ScheduleEvent) {
     val dateFormat = LocalDateTime.Format {
         byUnicodePattern("dd.MM.yyyy")
     }
-    val startTime = event.start?.format(timeFormat) ?: "??:??"
-    val endTime = event.end?.format(timeFormat) ?: "??:??"
-    val now = Clock.System.now().toLocalDateTime(currentSystemDefault())
+    val startTime = event.start.format(timeFormat)
+    val endTime = event.end.format(timeFormat)
+    val now = Clock.System.now().toLocalDateTime(UTC)
 
     Column(
         modifier = Modifier
@@ -94,9 +93,9 @@ fun EventScreen(event: ScheduleEvent) {
         }
         LinearWavyProgressIndicator(
             progress = {
-                if (now < event.start!!) {
+                if (now < event.start) {
                     0f
-                } else if (now < event.end!!) {
+                } else if (now < event.end) {
                     (now.toInstant(UTC) - event.start.toInstant(UTC))
                         .div(event.end.toInstant(UTC) - event.start.toInstant(UTC))
                         .toFloat()
@@ -108,7 +107,7 @@ fun EventScreen(event: ScheduleEvent) {
                 .fillMaxWidth()
         )
         Text(
-            text = event.start!!.format(dayNameFormat).uppercase(),
+            text = event.start.format(dayNameFormat).uppercase(),
             style = MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -137,6 +136,14 @@ fun EventScreen(event: ScheduleEvent) {
             modifier = Modifier
         )
 
+        if (!event.teacher.isNullOrBlank()) {
+            Text(
+                text = event.teacher,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
         Text(
             text = event.description,
             style = MaterialTheme.typography.titleMedium,
@@ -163,7 +170,7 @@ fun EventScreen(event: ScheduleEvent) {
                                 .minus(now.toInstant(UTC))
                         )
                     }"
-                } else if (now < event.end!!) {
+                } else if (now < event.end) {
                     "Закончится через ${
                         timeText(
                             event.end.toInstant(UTC)
@@ -205,8 +212,8 @@ fun PreviewEventScreen() {
                 event = ScheduleEvent(
                     name = "Системы формирования и исполнения решений",
                     location = "3 корпус - 214",
-                    start = now.minus(20.minutes).toLocalDateTime(currentSystemDefault()),
-                    end = now.plus(30.minutes).toLocalDateTime(currentSystemDefault()),
+                    start = now.minus(20.minutes).toLocalDateTime(UTC),
+                    end = now.plus(30.minutes).toLocalDateTime(UTC),
                     description = "Лекция",
                     id = "0",
                     teacher = null,

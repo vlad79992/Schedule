@@ -1,0 +1,9 @@
+.git
+**/bin
+**/obj
+**/.idea
+**/.vs
+**/node_modules
+ScheduleCompose/build
+ScheduleCompose/.gradle
+ScheduleCompose/local.properties

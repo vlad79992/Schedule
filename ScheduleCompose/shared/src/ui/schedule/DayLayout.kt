@@ -42,7 +42,7 @@ fun DayLayout(
         ) {
             itemsIndexed(
                 items = daySchedule.events,
-                key = { _, event -> "${event.start}_${event.name}" }
+                key = { index, event -> "${event.id}_$index" }
             ) { index, event ->
 
                 val shape = when {

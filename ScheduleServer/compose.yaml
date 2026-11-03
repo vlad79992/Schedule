@@ -2,10 +2,13 @@ services:
   scheduleserver:
     image: scheduleserver
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: ScheduleServer/Dockerfile
     ports:
-      - "8080:8080"
+      - "5287:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - ConnectionStrings__ScheduleContext=Host=postgres;Port=5432;Database=schedule;Username=schedule;Password=schedule
   postgres:
@@ -15,6 +18,11 @@ services:
       POSTGRES_DB: schedule
       POSTGRES_USER: schedule
       POSTGRES_PASSWORD: schedule
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U schedule -d schedule"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     ports:
       - "5433:5432"
     volumes:

@@ -17,6 +17,12 @@ Use the run configurations provided by the run widget in your IDE's toolbar. You
 - iOS app: `./kotlin run -m iosApp`
 - Web app: `./kotlin run -m webApp`
 
+### API server
+
+The shared Compose client uses `http://localhost:5287` by default. The Android emulator maps this to `10.0.2.2`; for physical devices, change the base URL in `shared/src/data/PlatformHttpClient.kt` to an address reachable on the local network. The web app uses the current page origin, so the Docker-hosted site calls the API on the same origin.
+
+Run the web app and API with `docker compose -f ScheduleServer/compose.yaml up --build`, then open `http://localhost:5287`.
+
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html), [Kotlin Toolchain](https://kotlin-toolchain.org/dev/), [Compose Multiplatform](https://kotlinlang.org/compose-multiplatform/), [Kotlin/Wasm](https://kotl.in/wasm/).
